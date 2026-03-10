@@ -126,19 +126,19 @@ const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
     {
-      image: "https://picsum.photos/seed/thinktank1/1920/1080",
+      image: "https://picsum.photos/seed/thinktank1/1280/720",
       category: "Análisis Estratégico",
       title: "Pensamiento crítico para la acción política",
       desc: "Somos un centro de investigación dedicado al análisis de políticas públicas y la generación de propuestas estratégicas para el desarrollo regional."
     },
     {
-      image: "https://picsum.photos/seed/thinktank2/1920/1080",
+      image: "https://picsum.photos/seed/thinktank2/1280/720",
       category: "Incidencia Pública",
       title: "Transformando ideas en políticas de Estado",
       desc: "Promovemos el debate plural y la construcción de consensos para fortalecer la calidad democrática y el crecimiento institucional."
     },
     {
-      image: "https://picsum.photos/seed/thinktank3/1920/1080",
+      image: "https://picsum.photos/seed/thinktank3/1280/720",
       category: "Investigación Aplicada",
       title: "Datos rigurosos para decisiones inteligentes",
       desc: "Nuestros observatorios proporcionan evidencia técnica para el diseño de soluciones innovadoras a los desafíos complejos de la actualidad."
@@ -164,7 +164,7 @@ const Hero = () => {
           transition={{ duration: 1.5 }}
           className="absolute inset-0 z-0"
         >
-          <img 
+          <img fetchpriority="high" 
             src={slides[currentSlide].image} 
             alt="Think Tank Río Paraná" 
             className="w-full h-full object-cover"
@@ -184,7 +184,7 @@ const Hero = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-3xl"
           >
-            <span className="inline-block px-4 py-1.5 rounded-full bg-primary/30 text-blue-200 text-xs font-bold uppercase tracking-widest mb-6 backdrop-blur-md border border-blue-400/20">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-primary/30 text-blue-200 text-xs font-bold uppercase tracking-widest mb-6 backdrop-blur-sm border border-blue-400/20">
               {slides[currentSlide].category}
             </span>
             <h1 className="text-5xl md:text-7xl text-white mb-6 leading-tight font-serif font-bold">
@@ -197,7 +197,7 @@ const Hero = () => {
               <button className="btn-primary text-lg px-8 py-4 flex items-center justify-center gap-2 group">
                 Líneas de Investigación <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </button>
-              <button className="bg-white/5 hover:bg-white/10 text-white backdrop-blur-md px-8 py-4 rounded-full font-semibold transition-all border border-white/20 flex items-center justify-center gap-2">
+              <button className="bg-white/5 hover:bg-white/10 text-white backdrop-blur-sm px-8 py-4 rounded-full font-semibold transition-all border border-white/20 flex items-center justify-center gap-2">
                 Nuestras Publicaciones
               </button>
             </div>
@@ -209,14 +209,14 @@ const Hero = () => {
       <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-20 px-4 md:px-10 flex justify-between pointer-events-none">
         <button 
           onClick={prevSlide}
-          className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 flex items-center justify-center transition-all pointer-events-auto active:scale-90"
+          className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 hover:bg-white/20 text-white backdrop-blur-sm border border-white/10 flex items-center justify-center transition-all pointer-events-auto active:scale-90"
           aria-label="Anterior"
         >
           <ChevronLeft size={32} />
         </button>
         <button 
           onClick={nextSlide}
-          className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 flex items-center justify-center transition-all pointer-events-auto active:scale-90"
+          className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 hover:bg-white/20 text-white backdrop-blur-sm border border-white/10 flex items-center justify-center transition-all pointer-events-auto active:scale-90"
           aria-label="Siguiente"
         >
           <ChevronRight size={32} />
@@ -251,10 +251,10 @@ const President = () => {
             <div className="relative">
               <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white">
                 <img 
-                  src="https://picsum.photos/seed/president/800/1000" 
+                  src="https://picsum.photos/seed/president/400/500" 
                   alt="Presidente" 
                   className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
+                  referrerPolicy="no-referrer" loading="lazy"
                 />
               </div>
               <div className="absolute -bottom-6 -right-6 bg-primary text-white p-6 rounded-2xl shadow-xl">
@@ -342,8 +342,8 @@ const Meetings = () => {
             viewport={{ once: true }}
             className="grid grid-cols-2 gap-4"
           >
-            <img src="https://picsum.photos/seed/meet1/600/800" className="rounded-3xl shadow-lg mt-12" referrerPolicy="no-referrer" />
-            <img src="https://picsum.photos/seed/meet2/600/800" className="rounded-3xl shadow-lg" referrerPolicy="no-referrer" />
+            <img src="https://picsum.photos/seed/meet1/300/400" className="rounded-3xl shadow-lg mt-12" referrerPolicy="no-referrer" loading="lazy" />
+            <img src="https://picsum.photos/seed/meet2/300/400" className="rounded-3xl shadow-lg" referrerPolicy="no-referrer" loading="lazy" />
           </motion.div>
         </div>
       </div>
@@ -395,10 +395,10 @@ const About = () => {
           >
             <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
               <img 
-                src="https://picsum.photos/seed/community/800/800" 
+                src="https://picsum.photos/seed/community/400/400" 
                 alt="Comunidad" 
                 className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
+                referrerPolicy="no-referrer" loading="lazy"
               />
             </div>
             <div className="absolute -bottom-8 -left-8 bg-primary text-white p-8 rounded-3xl shadow-xl hidden md:block">
@@ -418,19 +418,19 @@ const Projects = () => {
       title: "Observatorio Legislativo",
       desc: "Seguimiento y análisis técnico de proyectos de ley con impacto en el desarrollo regional.",
       icon: <Scale className="w-6 h-6" />,
-      image: "https://picsum.photos/seed/policy1/600/400"
+      image: "https://picsum.photos/seed/policy1/300/200"
     },
     {
       title: "Informes de Coyuntura",
       desc: "Análisis periódico de indicadores económicos y sociales para la toma de decisiones estratégicas.",
       icon: <PieChart className="w-6 h-6" />,
-      image: "https://picsum.photos/seed/policy2/600/400"
+      image: "https://picsum.photos/seed/policy2/300/200"
     },
     {
       title: "Propuestas de Estado",
       desc: "Diseño de marcos regulatorios y políticas públicas orientadas a la modernización institucional.",
       icon: <FileText className="w-6 h-6" />,
-      image: "https://picsum.photos/seed/policy3/600/400"
+      image: "https://picsum.photos/seed/policy3/300/200"
     }
   ];
 
@@ -457,7 +457,7 @@ const Projects = () => {
                   src={project.image} 
                   alt={project.title} 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
+                  referrerPolicy="no-referrer" loading="lazy"
                 />
               </div>
               <div className="p-8">
@@ -514,12 +514,12 @@ const Training = () => {
           
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-4 pt-12">
-              <img src="https://picsum.photos/seed/study1/400/500" className="rounded-2xl shadow-lg" referrerPolicy="no-referrer" />
-              <img src="https://picsum.photos/seed/study2/400/300" className="rounded-2xl shadow-lg" referrerPolicy="no-referrer" />
+              <img src="https://picsum.photos/seed/study1/200/250" className="rounded-2xl shadow-lg" referrerPolicy="no-referrer" loading="lazy" />
+              <img src="https://picsum.photos/seed/study2/200/150" className="rounded-2xl shadow-lg" referrerPolicy="no-referrer" loading="lazy" />
             </div>
             <div className="space-y-4">
-              <img src="https://picsum.photos/seed/study3/400/300" className="rounded-2xl shadow-lg" referrerPolicy="no-referrer" />
-              <img src="https://picsum.photos/seed/study4/400/500" className="rounded-2xl shadow-lg" referrerPolicy="no-referrer" />
+              <img src="https://picsum.photos/seed/study3/200/150" className="rounded-2xl shadow-lg" referrerPolicy="no-referrer" loading="lazy" />
+              <img src="https://picsum.photos/seed/study4/200/250" className="rounded-2xl shadow-lg" referrerPolicy="no-referrer" loading="lazy" />
             </div>
           </div>
         </div>
@@ -691,19 +691,19 @@ const News = () => {
       date: "15 Mar, 2024",
       title: "Publicación: Informe sobre Reformas Institucionales",
       desc: "Un análisis exhaustivo sobre la modernización de los procesos administrativos regionales.",
-      image: "https://picsum.photos/seed/paper1/600/400"
+      image: "https://picsum.photos/seed/paper1/300/200"
     },
     {
       date: "10 Mar, 2024",
       title: "Foro de Debate: El Futuro de la Gestión Pública",
       desc: "Expertos de todo el país se reunieron para discutir los desafíos de la gobernanza digital.",
-      image: "https://picsum.photos/seed/paper2/600/400"
+      image: "https://picsum.photos/seed/paper2/300/200"
     },
     {
       date: "05 Mar, 2024",
       title: "Propuesta Legislativa para el Desarrollo Sostenible",
       desc: "Presentamos un marco normativo integral para incentivar la inversión verde en la región.",
-      image: "https://picsum.photos/seed/paper3/600/400"
+      image: "https://picsum.photos/seed/paper3/300/200"
     }
   ];
 
@@ -735,9 +735,9 @@ const News = () => {
                   src={item.image} 
                   alt={item.title} 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
+                  referrerPolicy="no-referrer" loading="lazy"
                 />
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl text-xs font-bold text-primary">
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl text-xs font-bold text-primary">
                   {item.date}
                 </div>
               </div>
