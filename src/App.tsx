@@ -4,20 +4,20 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Menu, 
-  X, 
-  ChevronRight, 
-  Users, 
-  BookOpen, 
-  Briefcase, 
-  GraduationCap, 
-  Heart, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Instagram, 
-  Facebook, 
+import {
+  Menu,
+  X,
+  ChevronRight,
+  Users,
+  BookOpen,
+  Briefcase,
+  GraduationCap,
+  Heart,
+  Mail,
+  Phone,
+  MapPin,
+  Instagram,
+  Facebook,
   Twitter,
   ArrowRight,
   Target,
@@ -35,10 +35,15 @@ import {
   Scale
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { HashRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import NosotrosPage from './NosotrosPage';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -46,42 +51,103 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Investigación', href: '#investigacion' },
-    { name: 'Publicaciones', href: '#publicaciones' },
-    { name: 'Políticas Públicas', href: '#politicas' },
-    { name: 'Institucional', href: '#institucional' },
+  const navItems = [
     { name: 'Noticias', href: '#noticias' },
+    {
+      name: 'Áreas y Proyectos',
+      children: [
+        { name: 'Blog', href: '#blog' },
+        { name: 'Informes', href: '#informes' },
+        { name: 'Notas', href: '#notas' },
+      ]
+    },
+    {
+      name: 'Formación y Capacitación',
+      children: [
+        { name: 'Valores humanos y ciudadanía', href: '#valores' },
+        { name: 'Capacitación en gerontología', href: '#gerontologia' },
+      ]
+    },
+    {
+      name: 'La Asociación',
+      children: [
+        { name: 'Nos acompañan', href: '#acompanan' },
+        { name: 'Nosotros', href: '/nosotros', isRoute: true },
+        { name: 'Grupo Joven', href: '#grupojoven' },
+      ]
+    },
   ];
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'glass-nav py-3' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${scrolled ? 'bg-primary' : 'bg-white'}`}>
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 group"
+        >
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${scrolled ? 'bg-primary' : 'bg-white'}`}>
             <span className={`font-bold text-xl ${scrolled ? 'text-white' : 'text-primary'}`}>RP</span>
           </div>
-          <span className={`font-serif font-bold text-xl hidden sm:block ${scrolled ? 'text-primary' : 'text-white'}`}>
+          <span className={`font-serif font-bold text-xl hidden sm:block transition-colors ${scrolled ? 'text-primary' : 'text-white'}`}>
             Río Paraná
           </span>
-        </div>
+        </button>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a 
-              key={link.name} 
-              href={link.href} 
-              className={`font-medium transition-colors ${scrolled ? 'text-slate-600 hover:text-primary' : 'text-white/90 hover:text-white'}`}
-            >
-              {link.name}
-            </a>
-          ))}
+        <div className="hidden lg:flex items-center gap-6">
+          {navItems.map((item) =>
+            !item.children ? (
+              <a
+                key={item.name}
+                href={(item as { name: string; href: string }).href}
+                className={`font-medium transition-colors ${scrolled ? 'text-slate-600 hover:text-primary' : 'text-white/90 hover:text-white'}`}
+              >
+                {item.name}
+              </a>
+            ) : (
+              <div
+                key={item.name}
+                className="relative"
+                onMouseEnter={() => setOpenDropdown(item.name)}
+                onMouseLeave={() => setOpenDropdown(null)}
+              >
+                <button
+                  className={`flex items-center gap-1 font-medium transition-colors ${scrolled ? 'text-slate-600 hover:text-primary' : 'text-white/90 hover:text-white'}`}
+                >
+                  {item.name}
+                  <ChevronRight size={14} className={`transition-transform duration-200 ${openDropdown === item.name ? 'rotate-90' : ''}`} />
+                </button>
+
+                <AnimatePresence>
+                  {openDropdown === item.name && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.18 }}
+                      className="absolute top-full left-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden py-2"
+                    >
+                      {item.children.map((child) => (
+                        <a
+                          key={child.name}
+                          href={(child as any).isRoute ? undefined : child.href}
+                          onClick={(child as any).isRoute ? (e) => { e.preventDefault(); navigate(child.href); setOpenDropdown(null); } : undefined}
+                          className="block px-5 py-3 text-sm text-slate-600 hover:bg-accent hover:text-primary transition-colors font-medium cursor-pointer"
+                        >
+                          {child.name}
+                        </a>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )
+          )}
           <button className="btn-primary">Colabora</button>
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button 
+        <button
           className="lg:hidden p-2"
           onClick={() => setIsOpen(!isOpen)}
         >
@@ -96,24 +162,59 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             className="lg:hidden bg-white border-b border-slate-100 overflow-hidden"
           >
-            <div className="flex flex-col p-6 gap-4">
-              {navLinks.map((link) => (
-                <a 
-                  key={link.name} 
-                  href={link.href} 
-                  className="text-slate-600 font-medium py-2 border-b border-slate-50"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.name}
-                </a>
-              ))}
-              <button className="btn-primary w-full mt-2">Colabora</button>
+            <div className="flex flex-col p-4 gap-1">
+              {navItems.map((item) =>
+                !item.children ? (
+                  <a
+                    key={item.name}
+                    href={(item as { name: string; href: string }).href}
+                    className="text-slate-600 font-medium py-3 px-3 rounded-xl hover:bg-accent transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </a>
+                ) : (
+                  <div key={item.name}>
+                    <button
+                      className="w-full flex items-center justify-between text-slate-700 font-semibold py-3 px-3 rounded-xl hover:bg-accent transition-colors"
+                      onClick={() => setMobileOpen(mobileOpen === item.name ? null : item.name)}
+                    >
+                      {item.name}
+                      <ChevronRight size={16} className={`transition-transform duration-200 ${mobileOpen === item.name ? 'rotate-90' : ''}`} />
+                    </button>
+                    <AnimatePresence>
+                      {mobileOpen === item.name && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="overflow-hidden pl-4"
+                        >
+                          {item.children.map((child) => (
+                            <a
+                              key={child.name}
+                              href={(child as any).isRoute ? undefined : child.href}
+                              onClick={(child as any).isRoute
+                                ? (e) => { e.preventDefault(); navigate(child.href); setIsOpen(false); }
+                                : () => setIsOpen(false)}
+                              className="block text-slate-500 text-sm py-2.5 px-3 rounded-xl hover:bg-accent hover:text-primary transition-colors cursor-pointer"
+                            >
+                              {child.name}
+                            </a>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )
+              )}
+              <button className="btn-primary w-full mt-3">Colabora</button>
             </div>
           </motion.div>
         )}
@@ -126,22 +227,25 @@ const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
     {
-      image: "https://picsum.photos/seed/thinktank1/1280/720",
-      category: "Análisis Estratégico",
-      title: "Pensamiento crítico para la acción política",
-      desc: "Somos un centro de investigación dedicado al análisis de políticas públicas y la generación de propuestas estratégicas para el desarrollo regional."
+      image: "/AsociacionRioParana/fotos/Sliders/CongresoAnticorrupcion/IIICA_Luciani.jpg",
+      category: "Áreas y proyectos",
+      title: "III Congreso Nacional de Anticorrupción",
+      desc: "El más importante del país.",
+      date: "22 de agosto de 2025"
     },
     {
-      image: "https://picsum.photos/seed/thinktank2/1280/720",
-      category: "Incidencia Pública",
-      title: "Transformando ideas en políticas de Estado",
-      desc: "Promovemos el debate plural y la construcción de consensos para fortalecer la calidad democrática y el crecimiento institucional."
+      image: "/AsociacionRioParana/fotos/Sliders/Bertie-F-y-yo.png",
+      category: "Noticias",
+      title: "Bertie Benegas Lynch",
+      desc: "Claves y desafíos del panorama político 2025.",
+      date: "24 de abril de 2025"
     },
     {
-      image: "https://picsum.photos/seed/thinktank3/1280/720",
-      category: "Investigación Aplicada",
-      title: "Datos rigurosos para decisiones inteligentes",
-      desc: "Nuestros observatorios proporcionan evidencia técnica para el diseño de soluciones innovadoras a los desafíos complejos de la actualidad."
+      image: "/AsociacionRioParana/fotos/Otros/DifusionCN001.jpg",
+      category: "Áreas y proyectos",
+      title: "Difusión de los principios y valores republicanos en Club del Orden",
+      desc: "Por Alberto Cohan.",
+      date: "6 de febrero de 2026"
     }
   ];
 
@@ -156,7 +260,7 @@ const Hero = () => {
   return (
     <section className="relative h-screen flex items-center overflow-hidden">
       <AnimatePresence mode="wait">
-        <motion.div 
+        <motion.div
           key={currentSlide}
           initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -164,9 +268,9 @@ const Hero = () => {
           transition={{ duration: 1.5 }}
           className="absolute inset-0 z-0"
         >
-          <img fetchpriority="high" 
-            src={slides[currentSlide].image} 
-            alt="Think Tank Río Paraná" 
+          <img fetchPriority="high"
+            src={slides[currentSlide].image}
+            alt="Think Tank Río Paraná"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
@@ -176,7 +280,7 @@ const Hero = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 w-full">
         <AnimatePresence mode="wait">
-          <motion.div 
+          <motion.div
             key={currentSlide}
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -190,9 +294,15 @@ const Hero = () => {
             <h1 className="text-5xl md:text-7xl text-white mb-6 leading-tight font-serif font-bold">
               {slides[currentSlide].title}
             </h1>
-            <p className="text-xl text-slate-300 mb-10 leading-relaxed max-w-2xl">
+            <p className="text-xl text-slate-300 mb-4 leading-relaxed max-w-2xl">
               {slides[currentSlide].desc}
             </p>
+            {slides[currentSlide].date && (
+              <p className="flex items-center gap-2 text-sm text-blue-300/80 mb-10 font-medium tracking-wide">
+                <Calendar size={14} />
+                {slides[currentSlide].date}
+              </p>
+            )}
             <div className="flex flex-col sm:flex-row gap-4">
               <button className="btn-primary text-lg px-8 py-4 flex items-center justify-center gap-2 group">
                 Líneas de Investigación <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -207,14 +317,14 @@ const Hero = () => {
 
       {/* Navigation Arrows */}
       <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-20 px-4 md:px-10 flex justify-between pointer-events-none">
-        <button 
+        <button
           onClick={prevSlide}
           className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 hover:bg-white/20 text-white backdrop-blur-sm border border-white/10 flex items-center justify-center transition-all pointer-events-auto active:scale-90"
           aria-label="Anterior"
         >
           <ChevronLeft size={32} />
         </button>
-        <button 
+        <button
           onClick={nextSlide}
           className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 hover:bg-white/20 text-white backdrop-blur-sm border border-white/10 flex items-center justify-center transition-all pointer-events-auto active:scale-90"
           aria-label="Siguiente"
@@ -226,7 +336,7 @@ const Hero = () => {
       {/* Slide Indicators */}
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex gap-4">
         {slides.map((_, i) => (
-          <button 
+          <button
             key={i}
             onClick={() => setCurrentSlide(i)}
             className={`h-1.5 rounded-full transition-all duration-500 ${currentSlide === i ? 'w-12 bg-primary' : 'w-4 bg-white/20'}`}
@@ -242,7 +352,7 @@ const President = () => {
     <section className="section-padding bg-accent/30">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-5 gap-12 items-center">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -250,9 +360,9 @@ const President = () => {
           >
             <div className="relative">
               <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white">
-                <img 
-                  src="https://picsum.photos/seed/president/400/500" 
-                  alt="Presidente" 
+                <img
+                  src="/AsociacionRioParana/fotos/presidente/Tito_Voto.JPG"
+                  alt="Presidente"
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer" loading="lazy"
                 />
@@ -262,15 +372,15 @@ const President = () => {
               </div>
             </div>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="lg:col-span-3"
           >
-            <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">Mensaje de la Presidencia</span>
-            <h2 className="text-4xl mb-6">Dr. Roberto G. Valenzuela</h2>
+            <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">Presidente de la asociación</span>
+            <h2 className="text-4xl mb-6">Alberto Cohan</h2>
             <div className="w-20 h-1.5 bg-primary mb-8 rounded-full" />
             <p className="text-xl text-slate-700 italic mb-8 leading-relaxed font-serif">
               "Nuestra misión trasciende la asistencia; buscamos empoderar a cada individuo para que sea protagonista de su propio destino y del progreso de su comunidad."
@@ -312,7 +422,7 @@ const Meetings = () => {
     <section className="section-padding bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -335,8 +445,8 @@ const Meetings = () => {
               ))}
             </div>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -355,7 +465,7 @@ const About = () => {
     <section id="institucional" className="section-padding bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -364,7 +474,7 @@ const About = () => {
             <p className="text-lg text-slate-600 mb-8 leading-relaxed">
               La Asociación Civil Río Paraná es un **think tank** independiente dedicado al análisis riguroso de la realidad política, social y económica. Nuestra labor se centra en la generación de conocimiento técnico y propuestas innovadoras que contribuyan a la mejora de las políticas públicas y al fortalecimiento de las instituciones democráticas.
             </p>
-            
+
             <div className="grid sm:grid-cols-2 gap-8">
               <div className="flex gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0">
@@ -386,17 +496,17 @@ const About = () => {
               </div>
             </div>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             className="relative"
           >
             <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
-              <img 
-                src="https://picsum.photos/seed/community/400/400" 
-                alt="Comunidad" 
+              <img
+                src="https://picsum.photos/seed/community/400/400"
+                alt="Comunidad"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer" loading="lazy"
               />
@@ -444,7 +554,7 @@ const Projects = () => {
 
         <div className="grid md:grid-cols-3 gap-8">
           {projects.map((project, idx) => (
-            <motion.div 
+            <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -453,9 +563,9 @@ const Projects = () => {
               className="bg-white rounded-3xl overflow-hidden card-shadow group"
             >
               <div className="h-52 overflow-hidden">
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
+                <img
+                  src={project.image}
+                  alt={project.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   referrerPolicy="no-referrer" loading="lazy"
                 />
@@ -482,7 +592,7 @@ const Training = () => {
   return (
     <section id="politicas" className="section-padding bg-primary text-white overflow-hidden relative">
       <div className="absolute top-0 right-0 w-1/3 h-full bg-white/5 -skew-x-12 translate-x-1/2" />
-      
+
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
@@ -490,7 +600,7 @@ const Training = () => {
             <p className="text-lg text-blue-100 mb-10 leading-relaxed">
               Formamos a los líderes del mañana con una visión técnica, ética y estratégica. Nuestros programas están diseñados para fortalecer la gestión pública y el liderazgo civil.
             </p>
-            
+
             <ul className="space-y-6 mb-10">
               {[
                 "Diplomatura en Gestión de Políticas Públicas",
@@ -506,12 +616,12 @@ const Training = () => {
                 </li>
               ))}
             </ul>
-            
+
             <button className="bg-white text-primary px-8 py-4 rounded-full font-bold hover:bg-blue-50 transition-colors shadow-xl">
               Ver Calendario de Cursos
             </button>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-4 pt-12">
               <img src="https://picsum.photos/seed/study1/200/250" className="rounded-2xl shadow-lg" referrerPolicy="no-referrer" loading="lazy" />
@@ -567,7 +677,7 @@ const Contact = () => {
           <div className="lg:col-span-2 bg-primary p-12 text-white">
             <h2 className="text-3xl mb-8 text-white">Contáctanos</h2>
             <p className="text-blue-100 mb-12">Estamos aquí para escucharte. Ya sea para colaborar, sumarte como voluntario o realizar una consulta.</p>
-            
+
             <div className="space-y-8">
               <div className="flex gap-4">
                 <MapPin className="text-blue-300 shrink-0" />
@@ -640,7 +750,7 @@ const Footer = () => {
               Trabajando por el desarrollo social y comunitario de nuestra región desde hace más de 15 años.
             </p>
           </div>
-          
+
           <div>
             <h4 className="text-white font-bold mb-6">Navegación</h4>
             <ul className="space-y-4 text-sm">
@@ -672,7 +782,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
           <p>© {new Date().getFullYear()} Asociación Civil Río Paraná. Todos los derechos reservados.</p>
           <div className="flex gap-8">
@@ -722,7 +832,7 @@ const News = () => {
 
         <div className="grid md:grid-cols-3 gap-8">
           {newsItems.map((item, i) => (
-            <motion.article 
+            <motion.article
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -731,9 +841,9 @@ const News = () => {
               className="group cursor-pointer"
             >
               <div className="relative h-64 rounded-3xl overflow-hidden mb-6">
-                <img 
-                  src={item.image} 
-                  alt={item.title} 
+                <img
+                  src={item.image}
+                  alt={item.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   referrerPolicy="no-referrer" loading="lazy"
                 />
@@ -754,7 +864,7 @@ const News = () => {
   );
 };
 
-export default function App() {
+function HomePage() {
   return (
     <div className="min-h-screen selection:bg-primary/20 selection:text-primary">
       <Navbar />
@@ -771,5 +881,28 @@ export default function App() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+function NosotrosLayout() {
+  return (
+    <div className="min-h-screen selection:bg-primary/20 selection:text-primary">
+      <Navbar />
+      <main>
+        <NosotrosPage />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/nosotros" element={<NosotrosLayout />} />
+      </Routes>
+    </HashRouter>
   );
 }
