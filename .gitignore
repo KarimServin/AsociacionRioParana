@@ -6,3 +6,28 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Ignorar todas las fotos excepto las usadas en el sitio
+public/fotos/**
+
+# --- Fotos usadas en el sitio ---
+!public/fotos/presidente/
+!public/fotos/presidente/Tito_Voto.JPG
+
+!public/fotos/Sliders/
+!public/fotos/Sliders/Bertie-F-y-yo.png
+!public/fotos/Sliders/CongresoAnticorrupcion/
+!public/fotos/Sliders/CongresoAnticorrupcion/IIICA_Luciani.jpg
+
+!public/fotos/Otros/
+!public/fotos/Otros/DifusionCN001.jpg
+!public/fotos/Otros/Personas/
+!public/fotos/Otros/Personas/Alberto.png
+!public/fotos/Otros/Personas/Olegario.png
+!public/fotos/Otros/Personas/Fabian.png
+!public/fotos/Otros/Personas/Jorge.png
+!public/fotos/Otros/Personas/Anita.png
+!public/fotos/Otros/Personas/Dolli.png
+!public/fotos/Otros/Personas/Vir.jpg
+!public/fotos/Otros/Personas/Malvina.jpg
+!public/fotos/Otros/Personas/Leo.jpg
