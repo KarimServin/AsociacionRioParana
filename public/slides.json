@@ -1,0 +1,23 @@
+[
+  {
+    "link": "iniciativas/9",
+    "title": "Link Relativo - Iniciativa 9",
+    "desc": "Este slide usa un link relativo sin dominio ni slash inicial.",
+    "date": "22 de agosto de 2025",
+    "image": ""
+  },
+  {
+    "link": "https://rioparana.org.ar/#/articulos/informes/28",
+    "title": "Link Absoluto - Informe 28",
+    "desc": "Este slide usa una URL completa con dominio y hash.",
+    "date": "16 de marzo de 2026",
+    "image": ""
+  },
+  {
+    "link": "/contacto",
+    "title": "Link Estático - Contacto",
+    "desc": "Slide con imagen local manual.",
+    "date": "24 de abril de 2025",
+    "image": "/fotos/Sliders/Bertie-F-y-yo.png"
+  }
+]

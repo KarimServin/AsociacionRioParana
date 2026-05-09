@@ -1,13 +1,9 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React from 'react';
 import { Quote } from 'lucide-react';
-import { motion } from 'motion/react';
+import SeccionSuma from './components/SeccionSuma';
+import { motion } from 'framer-motion';
 
-const BASE = '/AsociacionRioParana';
+const BASE = '';
 
 const members = [
     {
@@ -56,7 +52,7 @@ const members = [
         name: 'Malvina Wiemer',
         role: 'Coordinadora de Reuniones Virtuales',
         photo: `${BASE}/fotos/Otros/Personas/Malvina.jpg`,
-        bio: 'Docente. Moderadora y Coordinadora de Encuentros Virtuales, responsable de la planificación, organización, ejecución y moderación de las reuniones virtuales de la Asociación. Responsable de su desarrollo, difusión, convocatoria y seguimiento.',
+        bio: 'Docente. Moderadora y Coordinadora de Encuentros Virtuales, responsable de la planificación, organization, ejecución y moderación de las reuniones virtuales de la Asociación. Responsable de su desarrollo, difusión, convocatoria y seguimiento.',
     },
     {
         name: 'Leonardo Ariel Huser',
@@ -70,16 +66,24 @@ const NosotrosPage: React.FC = () => {
     return (
         <div className="min-h-screen selection:bg-primary/20 selection:text-primary">
             {/* Hero */}
-            <section className="relative h-64 md:h-80 flex items-end overflow-hidden bg-primary">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-slate-900 opacity-90" />
-                <div className="relative z-10 max-w-7xl mx-auto px-6 pb-12 w-full">
-                    <p className="text-blue-200 text-sm font-bold uppercase tracking-widest mb-2">La Asociación</p>
-                    <h1 className="text-5xl md:text-6xl text-white font-serif font-bold">Nosotros</h1>
+            <section className="relative pt-36 pb-10 overflow-hidden bg-navy">
+                <div className="absolute inset-0 bg-linear-to-br from-navy via-navy to-slate-900 opacity-95" />
+                <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -mr-48 -mt-48 blur-3xl" />
+                
+                <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <span className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md border border-white/10 rounded-full text-blue-100 text-[10px] font-bold uppercase tracking-widest mb-3">Institucional</span>
+                        <h1 className="text-5xl md:text-6xl text-white font-serif font-bold leading-tight">Sobre Nosotros</h1>
+                    </motion.div>
                 </div>
             </section>
 
             {/* Institutional Text */}
-            <section className="section-padding bg-white">
+            <section className="section-spacing bg-white">
                 <div className="max-w-4xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -121,7 +125,7 @@ const NosotrosPage: React.FC = () => {
             </section>
 
             {/* Team */}
-            <section className="section-padding bg-slate-50">
+            <section className="section-spacing bg-slate-50">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl text-primary mb-4">Nuestro Equipo</h2>
@@ -163,6 +167,12 @@ const NosotrosPage: React.FC = () => {
                     </div>
                 </div>
             </section>
+
+            {/* CTA Section */}
+            <SeccionSuma 
+                titulo="¿Querés sumarte?"
+                subtitulo="Sumate a nuestro equipo de voluntarios y ayudanos a construir el futuro de nuestra región."
+            />
         </div>
     );
 };
